@@ -68,10 +68,9 @@ flowchart LR
 
 ## 5 参考规范
 
-- 文档规范参考`docs/README.md`
-- Agent体系架构角色定义参考`.ai/agents.yaml`，协作拓扑参考`.ai/workflows.yaml`，上下文管理策略参考`.ai/context/project-context.yaml`
+- 文档库使用指南参考`docs/README.md`
 - 解决方案规范参考`.ai/prompts/solutions/README.md`
 - 需求分析规范参考`.ai/prompts/analysis/README.md`
 - 需求交付规范参考`.ai/prompts/requirements/README.md`
 - 系统说明文档规范参考`.ai/prompts/instructions/README.md`
-- 开发规范参考 `~/ai/rules/*`
+- 开发规范参考 `.ai/rules/*`
