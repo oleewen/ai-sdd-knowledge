@@ -117,11 +117,11 @@ agents:
       - spec_generation
     input_context:
       - "各阶段 1～4 步分析/设计结果"
-      - ".ai/prompts/solutions/SOLUTION-TEMPLATE.md"
-      - ".ai/prompts/analysis/REQUIREMENT-TEMPLATE.md"
-      - "docs/requirements/PRD-TEMPLATE.md"
-      - "docs/requirements/ADD-TEMPLATE.md"
-      - "docs/requirements/TDD-TEMPLATE.md"
+      - ".ai/rules/solution/solution-template.md"
+      - ".ai/rules/analysis/requirement-template.md"
+      - ".ai/rules/requirement/prd-template.md"
+      - ".ai/rules/requirement/add-template.md"
+      - ".ai/rules/requirement/tdd-template.md"
     output_artifacts:
       - "solutions/SOLUTION-{ID}.md"
       - "analysis/REQUIREMENT-{ID}.md"

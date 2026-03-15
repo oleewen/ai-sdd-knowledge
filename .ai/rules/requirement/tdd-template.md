@@ -1,7 +1,7 @@
 ---
 ```
 id: "TDD-{REQUIREMENT-ID}-MVP{N}"
-title: "{测试方案标题}"
+title: "{测试设计标题}"
 version: "1.0.0"
 status: "draft"
 created: "{YYYY-MM-DD}"
@@ -11,9 +11,10 @@ reviewers: []
 parent: "PRD-{对应产品需求编号}"
 mvp_phase: "MVP-{N}"
 tags: []
+```
 ---
 
-# {测试方案标题}
+# {测试设计标题}
 
 ## 1. 概述
 

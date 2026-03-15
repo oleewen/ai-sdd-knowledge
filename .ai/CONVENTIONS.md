@@ -34,21 +34,33 @@
 | [testing-guidelines.md](.ai/rules/testing/testing-guidelines.md) | 测试规范：覆盖率门禁、分层策略、单元/集成测试、Mock、Jacoco |
 | [tdd-template.md](.ai/rules/testing/tdd-template.md) | 测试设计说明书(TDD)：现状分析、策略建议、用例清单、Mock 策略 |
 
-### 4. 需求规范 (requirement/)
+### 4. 解决方案规范 (solution/)
 
 | 文件 | 说明 |
 |------|------|
-| [requirement-template.md](.ai/rules/requirement/requirement-template.md) | 需求文档规范：SCQA、产品/模块/菜单/功能组织、版本与格式 |
-| [prd-template.md](.ai/rules/requirement/prd-template.md) | 产品需求说明书(PRD)：产品定位、功能清单、流程、业务规则、非功能需求 |
-| [requirement-analyse.md](.ai/rules/requirement/requirement-analyse.md) | 需求分析 Prompt：输入输出规范、模板结构、质量控制与验证 |
+| [solution-template.md](.ai/rules/solution/solution-template.md) | 解决方案文档模板：业务背景、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；产出 `solutions/SOLUTION-{ID}.md` |
 
-### 5. 文档规范 (document/)
+### 5. 需求分析规范 (analysis/)
+
+| 文件 | 说明 |
+|------|------|
+| [requirement-template.md](.ai/rules/analysis/requirement-template.md) | 需求分析文档模板：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分、依赖与风险；产出 `analysis/REQUIREMENT-{ID}.md` |
+
+### 6. 需求交付规范 (requirement/)
+
+| 文件 | 说明 |
+|------|------|
+| [prd-template.md](.ai/rules/requirement/prd-template.md) | 产品需求说明书(PRD)：产品概述、业务流程、用户故事与用例、功能模块、业务规则、验收标准；产出 `docs/requirements/.../PRD-{ID}.md` |
+| [add-template.md](.ai/rules/requirement/add-template.md) | 架构设计说明书(ADD)：设计概述、架构与接口、领域与数据、详细设计、API/逻辑/数据访问、非功能性设计；产出 `.../ADD-{ID}.md` |
+| [tdd-template.md](.ai/rules/requirement/tdd-template.md) | 测试设计说明书(TDD)：测试目标与范围、测试策略、测试用例、测试数据与环境、进出标准；产出 `.../TDD-{ID}.md` |
+
+### 7. 文档规范 (document/)
 
 | 文件 | 说明 |
 |------|------|
 | [document-guidelines.md](.ai/rules/document/document-guidelines.md) | 文档与注释规范：JavaDoc、类/包文档、代码注释、TODO 约定 |
 
-### 6. 根目录
+### 8. 根目录
 
 | 文件 | 说明 |
 |------|------|
@@ -77,11 +89,13 @@
 - **测试指南**：单元覆盖率≥80%、重复率≤5%、严重漏洞 0、编译警告 0；分层为单元(领域)、集成(应用/仓储)、E2E(API)；命名 `{ClassName}Test`、`should{Expected}When{Condition}`；FIRST、AAA、Given-When-Then；领域测试少 Mock、应用层 Mock 外部依赖；Jacoco 配置与排除项。
 - **TDD 模板**：测试现状、框架表、单元/集成/E2E 策略、用例清单(ID/描述/前置/步骤/期望)、测试数据与 Mock 策略。
 
-### 需求类
+### AI SDD 文档类（solution / analysis / requirement）
 
-- **需求模板**：原则为产品说明书而非纯需求说明；组织为产品/模块/菜单/功能/操作；版本变动带版本号；表达 SCQA；含背景目标、产品方案、流程设计、用户旅程、功能清单、非功能与权限。
-- **PRD 模板**：产品定位(5W)、目标用户、OKR、产品架构、用户旅程(mermaid journey)、功能清单表、主/子流程(mermaid flowchart)、业务规则表、非功能与权限表。
-- **需求分析**：严格按 requirement-template 小节顺序；场景化、可执行、可验证；禁止空泛描述与缺失章节；可结合业务过程/旅程/业务逻辑等提示词。
+- **解决方案模板**：业务背景与动机、业务目标、需求概述、影响面、冲突与化解、方案与范围、MVP 拆分；frontmatter 含 id/title/status/parent/dependencies；产出 `solutions/SOLUTION-{ID}.md`。
+- **需求分析模板**：需求概述、功能/非功能需求、业务规则、数据需求、MVP 拆分方案、依赖与风险、质量自查表；parent 指向 SOLUTION；产出 `analysis/REQUIREMENT-{ID}.md`。
+- **PRD 模板**：产品概述、业务流程(mermaid)、用户故事与用例、功能模块、业务规则汇总、验收标准；产出 `docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md`。
+- **ADD 模板**：设计概述、架构设计、详细设计(API/逻辑/数据访问/非功能)、发布与回滚；产出 `.../ADD-{ID}.md`。
+- **TDD 模板**：测试目标与范围、测试策略、测试用例(功能/接口/规则/异常/回归)、测试数据与环境、进出标准；产出 `.../TDD-{ID}.md`。
 
 ### 文档与 Agents
 

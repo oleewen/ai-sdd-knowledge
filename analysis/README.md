@@ -26,8 +26,8 @@
 
 ## 规范与模板
 
-- **阶段目标与工作流**：见 [.ai/prompts/analysis/README.md](../.ai/prompts/analysis/README.md)（深度研究 → 需求细化 → MVP 拆分与规划 → 依赖分析与风险评估 → 文档输出与评审）。
-- **文档模板**：见 [.ai/prompts/analysis/REQUIREMENT-TEMPLATE.md](../.ai/prompts/analysis/REQUIREMENT-TEMPLATE.md)。
+- **阶段目标与工作流**：见 [.cursor/skills/sdd-analysis/SKILL.md](../.cursor/skills/sdd-analysis/SKILL.md)（深度研究 → 需求细化 → MVP 拆分与规划 → 依赖分析与风险评估 → 文档输出与评审）。
+- **文档模板**：见 [.ai/rules/analysis/requirement-template.md](../.ai/rules/analysis/requirement-template.md)。
 
 ## 集成关系
 
