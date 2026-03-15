@@ -1,7 +1,7 @@
 ---
 name: sdd-prd
 description: >
-  AI SDD 需求交付·产品需求阶段：将需求分析中当前 MVP 的需求转化为详细产品方案与功能设计（业务流程、用户故事、用例、功能模块、交互与业务规则）。
+  产品需求说明：将需求分析中当前 MVP 的需求转化为详细产品方案与功能设计（业务流程、用户故事、用例、功能模块、交互与业务规则）。
   在用户执行 /sdd-prd、编写 PRD 文档时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/PRD-{ID}.md，模板见 .ai/rules/requirement/prd-template.md。
 ---
 

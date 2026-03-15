@@ -1,7 +1,7 @@
 ---
 name: sdd-analysis
 description: >
-  AI SDD 需求分析阶段：基于解决方案文档与知识库进行深度研究、需求细化、MVP 拆分与依赖/风险评估，输出需求分析文档。
+  需求分析：基于解决方案文档与知识库进行深度研究、需求细化、MVP 拆分与依赖/风险评估，输出需求分析文档。
   在用户执行 /sdd-analysis、编写需求分析文档、或进行方案→需求分析时使用。输出至 analysis/REQUIREMENT-{ID}.md，模板见 .ai/rules/analysis/requirement-template.md。
 ---
 

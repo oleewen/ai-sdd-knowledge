@@ -1,7 +1,7 @@
 ---
 name: sdd-solution
 description: >
-  AI SDD 解决方案阶段：从业务描述提取结构化需求，评估影响面，识别并化解冲突，制定解决方案并输出解决方案文档。
+  解决方案制定：从业务描述提取结构化需求，评估影响面，识别并化解冲突，制定解决方案并输出解决方案文档。
   在用户执行 /sdd-solution、编写解决方案文档、或进行需求→方案分析时使用。输出至 solutions/SOLUTION-{ID}.md，模板见 .ai/rules/solution/solution-template.md。
 ---
 

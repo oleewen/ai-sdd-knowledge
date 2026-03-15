@@ -1,7 +1,7 @@
 ---
 name: sdd-design
 description: >
-  AI SDD 需求交付·方案设计阶段：基于产品需求与架构/领域文档进行技术方案设计，输出 ADD 与规约文件。
+  技术方案设计：基于产品需求与架构/领域文档进行技术方案设计，输出 ADD 与规约文件。
   在用户执行 /sdd-design、编写 ADD 与规约时使用。产出见 .ai/rules/requirement/add-template.md；测试设计见 /sdd-test。
 ---
 

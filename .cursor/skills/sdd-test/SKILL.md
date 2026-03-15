@@ -1,7 +1,7 @@
 ---
 name: sdd-test
 description: >
-  AI SDD 需求交付·测试设计阶段：基于产品需求与技术设计制定测试策略与测试计划，输出测试设计文档（TDD）。
+  测试方案设计：基于产品需求与技术设计制定测试策略与测试计划，输出测试设计文档（TDD）。
   在用户执行 /sdd-test、编写测试设计/测试计划时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md，模板见 .ai/rules/requirement/tdd-template.md。
 ---
 
