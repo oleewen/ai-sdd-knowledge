@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# sdd-init：从 ai-sdd-docs 仓库初始化当前目录的 SDD 开发环境
-# 用法（在仓库内）：REPO_ROOT=/path/to/ai-sdd-docs ./scripts/sdd-init.sh [选项] [目标目录]
-# 用法（bootstrap）：由 scripts/sdd-init-bootstrap.sh 拉取仓库后调用，目标目录默认为当前目录
+# sdx-init：从 ai-sdd-docs 仓库初始化当前目录的 SDD 开发环境
+# 用法（在仓库内）：REPO_ROOT=/path/to/ai-sdd-docs ./scripts/sdx-init.sh [选项] [目标目录]
+# 用法（bootstrap）：由 scripts/sdx-init-bootstrap.sh 拉取仓库后调用，目标目录默认为当前目录
 
 set -euo pipefail
 
@@ -26,11 +26,11 @@ GIT_REPO_URL="${GIT_REPO_URL:-https://github.com/oleewen/ai-sdd-docs.git}"
 # 支持的 Agent：目录名与仓库内 .<name> 对应
 SUPPORTED_AGENTS=(cursor trea)
 # 已知的 Skill 列表（与 .ai/skills 下目录名一致）
-CURSOR_SKILLS=(knowledge-build sdd-solution sdd-analysis sdd-prd sdd-design sdd-test)
+CURSOR_SKILLS=(knowledge-build sdx-solution sdx-analysis sdx-prd sdx-design sdx-test)
 
 usage() {
   cat <<'USAGE'
-用法: sdd-init [选项] [目标目录]
+用法: sdx-init [选项] [目标目录]
 
 从 ai-sdd-docs 仓库初始化当前（或指定）目录的 SDD 开发环境：
   1) 将仓库内 knowledge 目录及同级所有文件（不含其他子目录）拷贝到目标目录的 docs
@@ -129,7 +129,7 @@ else
   IFS=',' read -ra ENABLED_AGENTS <<< "$AGENTS_OPT"
 fi
 
-echo "sdd-init 配置:"
+echo "sdx-init 配置:"
 echo "  仓库根: $REPO_ROOT"
 echo "  目标目录: $TARGET_DIR"
 echo "  文档目录: $DOCS_DIR -> $DOCS_ABS (范围: $DOCS_SCOPE)"
@@ -327,7 +327,7 @@ done
 echo "  完成."
 echo ""
 
-echo "sdd-init 已完成。"
+echo "sdx-init 已完成。"
 echo "  - 文档与知识库: $DOCS_ABS"
 echo "  - AI 配置: $AI_ABS"
 echo "  - Skills 已为以下 Agent 安装: ${ENABLED_AGENTS[*]}"

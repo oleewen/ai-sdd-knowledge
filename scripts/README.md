@@ -1,6 +1,6 @@
-# sdd-init：SDD 开发环境初始化
+# sdx-init：SDD 开发环境初始化
 
-在任意目录执行 `sdd-init`，可从本仓库（ai-sdd-docs）拉取内容并对**当前目录**完成 SDD 开发初始化，无需先克隆整个仓库到本地。
+在任意目录执行 `sdx-init`，可从本仓库（ai-sdd-docs）拉取内容并对**当前目录**完成 SDD 开发初始化，无需先克隆整个仓库到本地。
 
 ## 功能概述
 
@@ -24,7 +24,7 @@ cd /path/to/your-project
 2、执行命令
 
 ```bash
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdd-init-bootstrap.sh" | bash -s -- [sdd-init 选项]
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [sdx-init 选项]
 ```
 
 - 脚本会先将仓库克隆到临时目录，再对**当前目录**执行初始化，完成后删除临时克隆。
@@ -41,9 +41,9 @@ curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdd
 
 ```bash
 cd /path/to/your-project
-REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdd-init.sh [选项]
+REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdx-init.sh [选项]
 # 或指定目标目录
-/path/to/ai-sdd-docs/scripts/sdd-init.sh [选项] /path/to/your-project
+/path/to/ai-sdd-docs/scripts/sdx-init.sh [选项] /path/to/your-project
 ```
 
 1、进入需要初始化的项目目录
@@ -55,7 +55,7 @@ cd ai-sdd-docs
 2、执行命令
 
 ```bash
-./scripts/sdd-init.sh [选项] project-path
+./scripts/sdx-init.sh [选项] project-path
 ```
 
 ## 选项说明
@@ -69,17 +69,17 @@ cd ai-sdd-docs
 | `--agents=LIST` | 要初始化的 Agent：`cursor`、`trea` 或 `all`（默认: cursor） | `cursor` |
 | `--cursor-dir=DIR` | Cursor 配置目录（相对目标目录） | `.cursor` |
 | `--trea-dir=DIR` | Trea 配置目录（相对目标目录） | `.trea` |
-| `--skills=LIST` | 要安装的 skills（写入 .ai/skills）：`all` 或逗号分隔，如 `sdd-solution,sdd-analysis,sdd-prd`。未指定时：`ds=knowledge-only` 默认仅安装 `knowledge-build`，`ds=full` 默认安装全部 | 依 `ds` 而定 |
+| `--skills=LIST` | 要安装的 skills（写入 Agent 目录的 skills/）：`all` 或逗号分隔，如 `sdx-solution,sdx-analysis,sdx-prd`。未指定时：`ds=knowledge-only` 默认仅安装 `knowledge-build`，`ds=full` 默认安装全部 | 依 `ds` 而定 |
 | `--dry-run` | 仅打印将要执行的操作，不实际拷贝 | - |
 | `-h`, `--help` | 显示帮助 | - |
 
-可用的 skill 名称：`knowledge-build`, `sdd-solution`, `sdd-analysis`, `sdd-prd`, `sdd-design`, `sdd-test`。
+可用的 skill 名称：`knowledge-build`, `sdx-solution`, `sdx-analysis`, `sdx-prd`, `sdx-design`, `sdx-test`。
 
 ## 示例
 
 ```bash
 # 默认：仅 knowledge + 根目录文件到 docs，.ai 不含 solution/analysis rules，skills 默认仅安装 knowledge-build
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdd-init-bootstrap.sh" | bash -s
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh" | bash -s
 
 # 同时初始化 Cursor 与 Trea
 curl -sL "..." | bash -s -- --agents=cursor,trea
@@ -88,7 +88,7 @@ curl -sL "..." | bash -s -- --agents=cursor,trea
 curl -sL "..." | bash -s -- --ds=full --as=full
 
 # 文档放到 content/，只安装部分 skills
-curl -sL "..." | bash -s -- --dd=content --skills=sdd-solution,sdd-analysis,sdd-prd
+curl -sL "..." | bash -s -- --dd=content --skills=sdx-solution,sdx-analysis,sdx-prd
 
 # 先预览再执行
 curl -sL "..." | bash -s -- --dry-run

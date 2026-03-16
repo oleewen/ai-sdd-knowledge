@@ -1,11 +1,11 @@
 ---
-name: sdd-test
+name: sdx-test
 description: >
   测试方案设计：基于产品需求与技术设计制定测试策略与测试计划，输出测试设计文档（TDD）。
-  在用户执行 /sdd-test、编写测试设计/测试计划时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md，模板见 .ai/rules/requirement/tdd-template.md。
+  在用户执行 /sdx-test、编写测试设计/测试计划时使用。产出 docs/requirements/REQUIREMENT-{ID}/MVP-{N}/TDD-{ID}.md，模板见 .ai/rules/requirement/tdd-template.md。
 ---
 
-# 测试设计阶段（sdd-test）
+# 测试设计阶段（sdx-test）
 
 基于产品需求文档与技术设计文档，制定当前 MVP 的测试策略与测试计划，设计测试用例、测试数据与回归范围，输出测试设计文档（TDD），为后续开发与测试验证提供依据。
 

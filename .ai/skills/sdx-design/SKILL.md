@@ -1,11 +1,11 @@
 ---
-name: sdd-design
+name: sdx-design
 description: >
   技术方案设计：基于产品需求与架构/领域文档进行技术方案设计，输出 ADD 与规约文件。
-  在用户执行 /sdd-design、编写 ADD 与规约时使用。产出见 .ai/rules/requirement/add-template.md；测试设计见 /sdd-test。
+  在用户执行 /sdx-design、编写 ADD 与规约时使用。产出见 .ai/rules/requirement/add-template.md；测试设计见 /sdx-test。
 ---
 
-# 方案设计阶段（sdd-design）
+# 方案设计阶段（sdx-design）
 
 基于产品需求文档，结合系统架构与领域模型，进行技术方案设计，输出架构设计文档（ADD）和规约文件（Spec），为后续测试设计与开发阶段提供技术蓝图。
 

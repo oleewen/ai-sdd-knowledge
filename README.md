@@ -17,17 +17,17 @@
 | **[贡献指南](./CONTRIBUTING.md)**        | 如何新增/修改条目与ADR                               |
 
 
-## 快速初始化 (sdd-init)
+## 快速初始化 (sdx-init)
 
 在任意目录下执行以下命令，可从本仓库初始化 SDD 开发环境（文档模板、知识库结构、`.ai` 配置与 Agent 的 skills/命令）：
 
 ```bash
 # 方式一：从 Git 拉取并初始化当前目录（需先设置 GIT_REPO_URL 为实际仓库地址）
-curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdd-init-bootstrap.sh" | bash -s -- [选项]
+curl -sL "https://raw.githubusercontent.com/oleewen/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh" | bash -s -- [选项]
 
 # 方式二：已克隆本仓库时，在目标目录执行
 cd /path/to/your-project
-REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdd-init.sh [选项]
+REPO_ROOT=/path/to/ai-sdd-docs /path/to/ai-sdd-docs/scripts/sdx-init.sh [选项]
 ```
 
 默认初始化：① 将仓库内 **knowledge** 目录及根目录同级所有文件（不含其他子目录）拷贝到当前目录的 `docs/`（可改；`--ds=full` 可拷贝完整文档）；② 将 `.ai` 拷贝到当前目录的 `.ai/`（默认不包含 `rules/solution`、`rules/analysis`）；③ 按 `--agents` 为 Cursor、Trea 等 Agent 生成或拷贝配置（`.cursor`、`.trea` 等）。详见 [scripts/README.md](./scripts/README.md)。

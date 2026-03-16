@@ -58,7 +58,7 @@ requirements/
 
 ## 6. 相关模板与规范
 
-- PRD/ADD/TDD 等文档模板统一位于 `.ai/rules/requirement/`（prd-template.md、add-template.md、tdd-template.md）；阶段规范见 `.ai/skills/sdd-prd/`、`sdd-design/`、`sdd-test/`。
+- PRD/ADD/TDD 等文档模板统一位于 `.ai/rules/requirement/`（prd-template.md、add-template.md、tdd-template.md）；阶段规范见 `.ai/skills/sdx-prd/`、`sdx-design/`、`sdx-test/`。
 - 目录与命名示例可参见 `docs/README.md` 体系。
 
-> 阶段命令：`/sdd-prd`、`/sdd-design`、`/sdd-test`；详见 `.cursor/README.md`。
+> 阶段命令：`/sdx-prd`、`/sdx-design`、`/sdx-test`；详见 `.cursor/README.md`。

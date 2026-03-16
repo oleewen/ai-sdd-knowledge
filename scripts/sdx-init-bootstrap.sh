@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# sdd-init bootstrap：在任意目录执行，从 Git 拉取 ai-sdd-docs 到临时目录并对当前目录执行 sdd-init
-# 用法: curl -sL https://raw.githubusercontent.com/ORG/ai-sdd-docs/main/scripts/sdd-init-bootstrap.sh | bash -s -- [sdd-init 选项]
-# 或: bash scripts/sdd-init-bootstrap.sh [选项]
+# sdx-init bootstrap：在任意目录执行，从 Git 拉取 ai-sdd-docs 到临时目录并对当前目录执行 sdx-init
+# 用法: curl -sL https://raw.githubusercontent.com/ORG/ai-sdd-docs/main/scripts/sdx-init-bootstrap.sh | bash -s -- [sdx-init 选项]
+# 或: bash scripts/sdx-init-bootstrap.sh [选项]
 
 set -euo pipefail
 
@@ -12,10 +12,10 @@ CLONE_DIR="$TMP_DIR/ai-sdd-docs-$$"
 TARGET_DIR="$(pwd)"
 
 # 可选：通过环境变量指定仓库，例如 GIT_REPO_URL=... GIT_REF=main bash bootstrap.sh
-# 命令行参数全部传给 sdd-init（如 --dd=docs --skills=all）
+# 命令行参数全部传给 sdx-init（如 --dd=docs --skills=all）
 EXTRA_ARGS=("$@")
 
-echo "sdd-init bootstrap: 拉取仓库并初始化当前目录"
+echo "sdx-init bootstrap: 拉取仓库并初始化当前目录"
 echo "  仓库: $GIT_REPO_URL (ref: $GIT_REF)"
 echo "  目标: $TARGET_DIR"
 echo ""
@@ -41,11 +41,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
-if [[ ! -f "$CLONE_DIR/scripts/sdd-init.sh" ]]; then
-  echo "错误: 仓库中未找到 scripts/sdd-init.sh" >&2
+if [[ ! -f "$CLONE_DIR/scripts/sdx-init.sh" ]]; then
+  echo "错误: 仓库中未找到 scripts/sdx-init.sh" >&2
   exit 1
 fi
 
 export REPO_ROOT="$CLONE_DIR"
 export TARGET_DIR
-bash "$CLONE_DIR/scripts/sdd-init.sh" "${EXTRA_ARGS[@]}"
+bash "$CLONE_DIR/scripts/sdx-init.sh" "${EXTRA_ARGS[@]}"
