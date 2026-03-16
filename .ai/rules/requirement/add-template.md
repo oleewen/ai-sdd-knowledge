@@ -1,5 +1,4 @@
 ---
-```
 id: "ADD-{REQUIREMENT-ID}-MVP{N}"
 title: "{技术设计标题}"
 version: "1.0.0"

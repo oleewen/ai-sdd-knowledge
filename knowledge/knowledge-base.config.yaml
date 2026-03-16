@@ -14,8 +14,8 @@ views:
 
 # 解决方案与需求分析（与 knowledge 平级，位于仓库根）
 artifacts:
-  solutions: "../solutions"    # 解决方案文档 SOLUTION-{ID}.md，详见 .ai/rules/solution/solution-template.md 与 .cursor/skills/sdd-solution/SKILL.md
-  analysis: "../analysis"     # 需求分析文档 REQUIREMENT-{ID}.md，详见 .ai/rules/analysis/requirement-template.md 与 .cursor/skills/sdd-analysis/SKILL.md
+  solutions: "../solutions"    # 解决方案文档 SOLUTION-{ID}.md，详见 .ai/rules/solution/solution-template.md 与 .ai/skills/sdd-solution/SKILL.md
+  analysis: "../analysis"     # 需求分析文档 REQUIREMENT-{ID}.md，详见 .ai/rules/analysis/requirement-template.md 与 .ai/skills/sdd-analysis/SKILL.md
 
 # 应用级 manifest 约定（供 CI 同步参考）
 app_manifest:

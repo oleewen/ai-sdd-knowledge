@@ -12,7 +12,7 @@ CLONE_DIR="$TMP_DIR/ai-sdd-docs-$$"
 TARGET_DIR="$(pwd)"
 
 # 可选：通过环境变量指定仓库，例如 GIT_REPO_URL=... GIT_REF=main bash bootstrap.sh
-# 命令行参数全部传给 sdd-init（如 --docs-dir=docs --skills=all）
+# 命令行参数全部传给 sdd-init（如 --dd=docs --skills=all）
 EXTRA_ARGS=("$@")
 
 echo "sdd-init bootstrap: 拉取仓库并初始化当前目录"

@@ -52,7 +52,7 @@
 业务诉求的解决方案文档的新增与维护。
 
 - 在 **solutions/**（与 knowledge 平级）下创建 `SOLUTION-{ID}.md`，ID 建议为 `{YYYYMMDD}-{SEQ}` 或项目约定编号。
-- 参考模板 [.ai/rules/solution/solution-template.md](./.ai/rules/solution/solution-template.md)，阶段规范见 [.cursor/skills/sdd-solution/SKILL.md](./.cursor/skills/sdd-solution/SKILL.md)。
+- 参考模板 [.ai/rules/solution/solution-template.md](./.ai/rules/solution/solution-template.md)，阶段规范见 [.ai/skills/sdd-solution/SKILL.md](./.ai/skills/sdd-solution/SKILL.md)。
 - 已完结或废弃的解决方案可移入 **solutions/archive/**。
 
 ---
@@ -62,7 +62,7 @@
 需求分析文档的新增与维护。
 
 - 在 **analysis/**（与 knowledge 平级）下创建 `REQUIREMENT-{ID}.md`，文档 frontmatter 中 `parent` 指向对应的 SOLUTION。
-- 参考模板 [.ai/rules/analysis/requirement-template.md](./.ai/rules/analysis/requirement-template.md)，阶段规范见 [.cursor/skills/sdd-analysis/SKILL.md](./.cursor/skills/sdd-analysis/SKILL.md)。
+- 参考模板 [.ai/rules/analysis/requirement-template.md](./.ai/rules/analysis/requirement-template.md)，阶段规范见 [.ai/skills/sdd-analysis/SKILL.md](./.ai/skills/sdd-analysis/SKILL.md)。
 
 ---
 
