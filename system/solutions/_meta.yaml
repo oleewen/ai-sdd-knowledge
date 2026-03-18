@@ -1,0 +1,56 @@
+# system/solutions 目录元数据
+id: "DIR-SOLUTIONS"
+name: "解决方案（solutions）"
+description: "AI SDD 解决方案阶段产出目录：从业务诉求中提取结构化需求，评估影响面、识别冲突并形成解决方案，输出 SOLUTION-{ID}.md，作为需求分析阶段输入。"
+
+stage:
+  sdd_phase: "solution"
+  outputs_are_inputs_for: "analysis"
+
+inputs:
+  - path: "../knowledge/"
+    description: "系统知识库（business/product/technical/data + constitution）"
+  - path: "../specs/"
+    description: "需求规约（服务/接口等规格）"
+  - path: "(external)"
+    description: "业务需求描述来源（邮件、会议纪要、工单等）"
+
+outputs:
+  primary_artifact:
+    pattern: "SOLUTION-{ID}.md"
+    description: "解决方案文档（需求提取、影响面评估、冲突识别、方案制定与评审结论）"
+  archive:
+    path: "./archive/"
+    description: "已完结或被 superseded 的解决方案归档区（便于历史检索）"
+
+naming_conventions:
+  file:
+    pattern: "SOLUTION-{ID}.md"
+    id_guidance: "{ID} 建议为 {YYYYMMDD}-{SEQ} 或项目约定的唯一编号"
+  frontmatter:
+    required_fields:
+      - "id"
+    optional_fields:
+      - "parent"
+      - "dependencies"
+    constraints:
+      - "frontmatter.id 与文件名 SOLUTION-{ID}.md 保持一致"
+
+indexing:
+  readme_index_table: true
+  rule: "新增解决方案文档应登记到 README.md 的方案索引表"
+
+integration:
+  references_knowledge_entities: true
+  downstream_links:
+    - path: "../analysis/"
+      via: "analysis 文档 frontmatter.parent"
+      description: "需求分析文档（REQUIREMENT-{ID}.md）的 parent 关联到本目录 SOLUTION"
+
+references:
+  - path: "./README.md"
+    description: "本目录说明与方案索引表"
+  - path: "../.ai/skills/sdx-solution/SKILL.md"
+    description: "解决方案阶段目标与工作流"
+  - path: "../.ai/rules/solution/solution-template.md"
+    description: "解决方案文档模板"

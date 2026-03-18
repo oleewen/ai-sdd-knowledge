@@ -1,0 +1,61 @@
+# system/knowledge 目录元数据
+id: "DIR-KNOWLEDGE"
+name: "系统知识库（knowledge）"
+description: "全局软件系统知识文档库主体（SSOT）：宪法层 + 业务/产品/技术/数据四视角。solutions、analysis、requirements 等阶段以此为输入，并在需求归档时回写更新。"
+
+role:
+  is_single_source_of_truth: true
+  perspectives:
+    - "constitution"
+    - "business"
+    - "product"
+    - "technical"
+    - "data"
+
+inputs:
+  - path: "(from-delivery-and-operations)"
+    description: "随系统演进沉淀的事实、决策与交付结果（在归档阶段回写）"
+
+outputs:
+  primary_artifact:
+    pattern: "*/README.md, */**/_meta.yaml, */**/*.yaml, */**/*.md"
+    description: "知识条目与索引（按视角与实体层级组织）"
+
+naming_conventions:
+  ids:
+    description: "实体 ID 使用全局唯一前缀（BD/BSD/BC/AGG、PL/PM/FT/UC、SYS/APP/MS、DS/ENT 等），遵循命名规范"
+    reference: "./constitution/standards/naming-conventions.md"
+  references:
+    description: "文档间优先使用相对仓库根目录路径（如 knowledge/...），便于工具解析与跳转"
+
+indexing:
+  global_index:
+    path: "../INDEX.md"
+    rule: "更新知识条目后，必要时同步更新全局 INDEX.md 与各视角 README"
+  per_perspective_readmes:
+    - "./constitution/README.md"
+    - "./business/README.md"
+    - "./product/README.md"
+    - "./technical/README.md"
+    - "./data/README.md"
+
+integration:
+  consumed_by:
+    - path: "../solutions/"
+      description: "解决方案阶段读取 knowledge 评估现状与影响面"
+    - path: "../analysis/"
+      description: "需求分析阶段读取 knowledge 做深度研究与 MVP 拆分"
+    - path: "../requirements/"
+      description: "需求交付阶段可引用 knowledge 中术语、架构与映射"
+    - path: "../changelogs/"
+      description: "归档阶段同步更新变更日志并回写 knowledge"
+
+references:
+  - path: "./README.md"
+    description: "knowledge 目录定位、结构与维护规则"
+  - path: "../INDEX.md"
+    description: "全局索引与映射速查"
+  - path: "../DESIGN.md"
+    description: "目录结构与元模型规范"
+  - path: "../CONTRIBUTING.md"
+    description: "新增/修改知识条目与 ADR 的贡献指南"

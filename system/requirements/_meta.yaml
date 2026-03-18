@@ -1,0 +1,54 @@
+# system/requirements 目录元数据
+id: "DIR-REQUIREMENTS"
+name: "需求交付（requirements）"
+description: "AI SDD 需求交付阶段产物目录：将 analysis 输出的高层次需求按 MVP/阶段拆分落地为可执行交付包 REQUIREMENT-{ID}/，沉淀 PRD/ADD/TDD 等文档。"
+
+stage:
+  sdd_phase: "requirements"
+
+inputs:
+  - path: "../analysis/"
+    description: "需求分析文档（REQUIREMENT-{ID}.md）"
+  - path: "../solutions/"
+    description: "解决方案文档（SOLUTION-{ID}.md）"
+  - path: "../.ai/rules/requirement/"
+    description: "PRD/ADD/TDD 等模板与规范"
+
+outputs:
+  primary_artifact:
+    pattern: "REQUIREMENT-{ID}/"
+    description: "需求交付包目录（按阶段组织 PRD/ADD/TDD 等交付物）"
+  phase_artifacts:
+    pattern: "REQUIREMENT-{ID}/MVP-Phase-*/{PRD,ADD,TDD}.md"
+    description: "单阶段核心交付文档（可按需扩展 SPEC/DEV 等）"
+
+naming_conventions:
+  directory:
+    pattern: "REQUIREMENT-{ID}/"
+  phases:
+    pattern: "MVP-Phase-{N}/"
+  documents:
+    recommended:
+      - "PRD.md"
+      - "ADD.md"
+      - "TDD.md"
+
+indexing:
+  example_reference:
+    path: "./REQUIREMENT-EXAMPLE/"
+    description: "需求交付结构示例，可复制后改名为 REQUIREMENT-{ID}/"
+
+integration:
+  traceability:
+    - "交付包应与 analysis/REQUIREMENT-{ID}.md、solutions/SOLUTION-{ID}.md 通过 ID 关联，便于追溯"
+  upstream_dirs:
+    - "../analysis/"
+    - "../solutions/"
+
+references:
+  - path: "./README.md"
+    description: "本阶段目标、结构与工作流说明"
+  - path: "./REQUIREMENT-EXAMPLE/README.md"
+    description: "示例交付包说明"
+  - path: "../DESIGN.md"
+    description: "全局目录结构与阶段设计"

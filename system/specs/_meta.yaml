@@ -1,0 +1,40 @@
+# system/specs 目录元数据
+id: "DIR-SPECS"
+name: "需求规约（specs）"
+description: "服务/接口等规格定义目录，供 solutions、analysis 引用，并与 knowledge/technical 的应用与接口信息互补。"
+
+stage:
+  sdd_phase: "specs"
+  supports_phases:
+    - "solution"
+    - "analysis"
+    - "requirements"
+
+inputs:
+  - path: "../knowledge/"
+    description: "系统知识库（尤其 technical 视角的系统/应用信息）"
+  - path: "(from-solution-and-delivery)"
+    description: "方案阶段与交付阶段沉淀的接口/服务规格需求"
+
+outputs:
+  primary_artifact:
+    pattern: "**/*.{yaml,yml,md}"
+    description: "按服务或规约类型组织的规格文档（格式由项目约定）"
+
+naming_conventions:
+  structure:
+    description: "按服务或规约类型建子目录（如 example-service/），内容格式由项目约定"
+
+integration:
+  referenced_by:
+    - path: "../solutions/"
+      description: "解决方案文档会引用 specs 作为接口/服务等约束依据"
+    - path: "../analysis/"
+      description: "需求分析文档会引用 specs 作为研究与拆解依据"
+  complements:
+    - path: "../knowledge/technical/"
+      description: "与技术视角应用注册/manifest 信息互补"
+
+references:
+  - path: "../DESIGN.md"
+    description: "全局目录结构与 specs 定位约定"

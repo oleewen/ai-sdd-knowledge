@@ -1,0 +1,35 @@
+# system/changelogs 目录元数据
+id: "DIR-CHANGELOGS"
+name: "变更日志（changelogs）"
+description: "系统级变更沉淀目录：记录知识库与阶段文档的关键演进与里程碑（CHANGELOG.md）。"
+
+stage:
+  sdd_phase: "changelogs"
+  supports_phases:
+    - "knowledge"
+    - "solution"
+    - "analysis"
+    - "requirements"
+
+inputs:
+  - path: "../knowledge/"
+    description: "知识库条目变更"
+  - path: "../solutions/"
+    description: "解决方案阶段关键决策与变更"
+  - path: "../analysis/"
+    description: "需求分析阶段关键结论与范围调整"
+  - path: "../requirements/"
+    description: "需求交付阶段里程碑与交付变更"
+
+outputs:
+  primary_artifact:
+    path: "./CHANGELOG.md"
+    description: "系统级变更日志"
+
+integration:
+  archive_feedback_loop:
+    description: "在需求归档/知识回写时同步更新 changelogs，形成闭环可追溯记录"
+
+references:
+  - path: "../DESIGN.md"
+    description: "全局目录结构与 changelogs 定位约定"

@@ -1,0 +1,53 @@
+# system/analysis 目录元数据
+id: "DIR-ANALYSIS"
+name: "需求分析（analysis）"
+description: "AI SDD 需求分析阶段产出目录：基于解决方案与知识库进行研究与细化，输出 REQUIREMENT-{ID}.md，作为需求交付阶段输入。"
+
+stage:
+  sdd_phase: "analysis"
+  outputs_are_inputs_for: "requirements"
+
+inputs:
+  - path: "../solutions/"
+    description: "解决方案文档（SOLUTION-{ID}.md）"
+  - path: "../knowledge/"
+    description: "系统知识库（四视角 + 宪法层）"
+  - path: "../specs/"
+    description: "需求规约（服务/接口等规格）"
+
+outputs:
+  primary_artifact:
+    pattern: "REQUIREMENT-{ID}.md"
+    description: "需求分析文档（需求细化、MVP 拆分、依赖/风险评估等）"
+
+naming_conventions:
+  file:
+    pattern: "REQUIREMENT-{ID}.md"
+    id_guidance: "{ID} 建议与解决方案或项目约定的唯一编号一致或可追溯"
+  frontmatter:
+    required_fields:
+      - "id"
+      - "parent"
+    constraints:
+      - "frontmatter.id 与文件名 REQUIREMENT-{ID}.md 保持一致"
+      - "frontmatter.parent 指向对应的 SOLUTION-{ID}"
+
+indexing:
+  readme_index_table: true
+  rule: "每新增/评审一份 REQUIREMENT-{ID}.md，应同步更新 README.md 的分析索引表"
+
+integration:
+  parent_points_to:
+    - path: "../solutions/"
+      via: "frontmatter.parent"
+  traceability_notes:
+    - "可与 business、product 视角的功能/用例 ID 建立追溯关系"
+    - "实现方案与 technical、data 视角对齐"
+
+references:
+  - path: "./README.md"
+    description: "本目录说明与索引表"
+  - path: "../.ai/skills/sdx-analysis/SKILL.md"
+    description: "需求分析阶段目标与工作流"
+  - path: "../.ai/rules/analysis/requirement-template.md"
+    description: "需求分析文档模板"
