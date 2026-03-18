@@ -107,6 +107,44 @@ curl -sL "..." | bash -s -- --force
 curl -sL "..." | bash -s -- --dry-run
 ```
 
+---
+
+# knowledge-init：初始化应用知识库模板
+
+运行要求：`Bash 5+`。
+
+将本仓库 `applications/app-APPNAME` 目录下所有目录和文件，拷贝到**目标工程**的文档目录下。
+
+目标工程与文档目录用一个参数表示，例如 `~/workspace/test/docs`：
+- 目标工程：`~/workspace/test`
+- 文档目录：`docs`
+
+## 使用方式
+
+```bash
+# 拷贝到 <目标工程>/<文档目录>/（示例：/path/to/your-project/docs）
+./scripts/knowledge-init.sh /path/to/your-project/docs
+
+# 中央知识库模式：额外在本仓库 system/INDEX.md 登记工程接入信息，
+# 并在 system/knowledge/technical/SYS-ECOMMERCE-BACKEND/ 下生成 APP-<工程名>/ 模板
+./scripts/knowledge-init.sh --mode=central /path/to/your-project/docs
+
+# 模式缩写（等价于 --mode=standalone / --mode=central）
+./scripts/knowledge-init.sh --mode=s /path/to/your-project/docs
+./scripts/knowledge-init.sh --mode=c /path/to/your-project/docs
+
+# 预览模式（不落盘）
+./scripts/knowledge-init.sh --dry-run --mode=central /path/to/your-project/docs
+```
+
+## 选项说明
+
+| 选项 | 说明 | 默认 |
+|------|------|------|
+| `--mode=MODE` | `standalone`（仅拷贝）\| `central`（登记到 system 并生成技术视角模板）；也支持缩写 `s` \| `c` | `standalone` |
+| `--app-id=APP-ID` | 中央模式下写入技术视角的 APP ID（不传则由工程目录推导） | - |
+| `--dry-run` | 仅打印将要执行的操作，不实际拷贝/写入 | - |
+
 ## 初始化后的目录结构（目标目录）
 
 **独立模式（默认 `--mode=standalone`）**
