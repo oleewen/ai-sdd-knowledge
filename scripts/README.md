@@ -143,20 +143,15 @@ curl -sL "..." | bash -s -- --dry-run
 |------|------|------|
 | `--mode=MODE` | `standalone`（仅拷贝）\| `central`（登记到 system 并生成技术视角模板）；也支持缩写 `s` \| `c` | `standalone` |
 | `--app-id=APP-ID` | 中央模式下写入技术视角的 APP ID（不传则由工程目录推导） | - |
+| `--agents=LIST` | 要安装的 Agent（支持多选）：`cursor` \| `trea` \| `all`；可用逗号分隔如 `cursor,trea`（也支持 `--agents cursor trea`） | `cursor` |
 | `--dry-run` | 仅打印将要执行的操作，不实际拷贝/写入 | - |
 
-## 初始化后的目录结构（目标目录）
+## 初始化后的目录结构（目标工程）
 
-**独立模式（默认 `--mode=standalone`）**
+- 在 `<目标工程>/<文档目录>/` 下同步 `applications/app-APPNAME/` 的目录和文件（作为应用知识库根）。
+- 若选择 `--agents=cursor`：在 `<目标工程>/.cursor/` 下安装 `skills/` 与 `rules/`（skills 仅安装 `agent-*`/`document-*`/`knowledge-*`），并拷贝 `.cursor/README.md`（如存在）。
+- 若选择 `--agents=trea`：在 `<目标工程>/.trea/` 下安装 `skills/` 与 `rules/`（skills 仅安装 `agent-*`/`document-*`/`knowledge-*`），并拷贝 `.trea/README.md`（如存在）。
 
-- `docs/system/`：仓库 **system/** 目录内容（默认仅 knowledge 及根目录文件；`--ds=full` 时含 solutions、analysis、requirements、specs、changelogs 等）。
-- `docs/application/`：仓库 **applications/** 目录内容（单目录，无 app-APPNAME）。
-- `.ai/`、`.cursor/`、`.trea/`：同上。
+说明：rules 会过滤掉 `.ai/rules/solution/` 与 `.ai/rules/analysis/` 两个目录。
 
-**联邦模式（`--mode=federation`）**
-
-- `docs/system/`：同上。
-- `docs/applications/`：仓库 **applications/** 及新建的 `app-<工程目录名>/`；目标 **.gitignore** 增加对文档根（如 `docs`）的忽略；**docs/.git** 为当前仓库 .git 的拷贝。
-- `.ai/`、`.cursor/`、`.trea/`：同上。
-
-Cursor 中可通过 `/命令名` 或 `@技能名` 使用已安装的 skills；Trea 等 Agent 使用各自目录下的配置。
+中央模式（`--mode=central`）额外会更新本仓库 `system/INDEX.md`，并在 `system/knowledge/technical/SYS-ECOMMERCE-BACKEND/` 下生成 `APP-<工程名>/` 注册模板。

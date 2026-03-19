@@ -44,6 +44,14 @@ abs_path() {
   fi
 }
 
+strip_trailing_slash() {
+  local p="$1"
+  while [[ "$p" != "/" && "$p" == */ ]]; do
+    p="${p%/}"
+  done
+  echo "$p"
+}
+
 ensure_dir() {
   if [[ "${DRY_RUN:-0}" == "0" ]]; then
     mkdir -p "$1"
@@ -82,26 +90,78 @@ sanitize_app_id() {
   fi
 }
 
-detect_git_dir_or_empty() {
+detect_git_repo_ref_or_empty() {
   local target="$1"
   if ! have_cmd git; then
     echo ""
     return 0
   fi
   if git -C "$target" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    local git_dir
-    git_dir="$(git -C "$target" rev-parse --git-dir 2>/dev/null || true)"
-    if [[ -z "$git_dir" ]]; then
-      echo ""
+    # 优先使用远端仓库地址（更符合 repo_url 语义）；缺失时退回到本地仓库根目录
+    local remote_url git_root
+    remote_url="$(git -C "$target" config --get remote.origin.url 2>/dev/null || true)"
+    if [[ -n "$remote_url" ]]; then
+      echo "$remote_url"
       return 0
     fi
-    if [[ "$git_dir" != /* ]]; then
-      git_dir="$target/$git_dir"
+
+    git_root="$(git -C "$target" rev-parse --show-toplevel 2>/dev/null || true)"
+    if [[ -n "$git_root" ]]; then
+      echo "$(abs_path "$git_root")"
+      return 0
     fi
-    echo "$(abs_path "$git_dir")"
+
+    echo ""
     return 0
   fi
   echo ""
+}
+
+detect_git_root_path_or_empty() {
+  local target="$1"
+  if ! have_cmd git; then
+    echo ""
+    return 0
+  fi
+  if git -C "$target" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    local git_root
+    git_root="$(git -C "$target" rev-parse --show-toplevel 2>/dev/null || true)"
+    if [[ -n "$git_root" ]]; then
+      echo "$(abs_path "$git_root")"
+      return 0
+    fi
+  fi
+  echo ""
+}
+
+docs_path_relative_to_git_root_or_abs() {
+  local git_root="$1"
+  local docs_abs="$2"
+
+  if [[ -z "$git_root" ]]; then
+    echo "$docs_abs"
+    return 0
+  fi
+
+  git_root="$(strip_trailing_slash "$git_root")"
+  docs_abs="$(strip_trailing_slash "$docs_abs")"
+
+  case "$docs_abs" in
+    "$git_root")
+      echo "/"
+      return 0
+      ;;
+    "$git_root"/*)
+      local rel="${docs_abs#"$git_root"}"
+      # rel 以 "/" 开头，符合现有 docs_manifest_path 约定（如 /docs/manifest.yaml）
+      echo "$rel"
+      return 0
+      ;;
+    *)
+      echo "$docs_abs"
+      return 0
+      ;;
+  esac
 }
 
 usage() {
@@ -124,6 +184,7 @@ usage() {
 选项:
   --mode=MODE         模式：standalone（默认）| central（也支持缩写：s | c）
   --app-id=APP-ID     中央模式下写入技术视角的 APP ID（默认由工程目录推导）
+  --agents=LIST      Agent 列表（支持多选）：cursor|trea|all，且可用逗号分隔如 cursor,trea（默认: cursor）
   --force             若目标目录已存在则覆盖（默认覆盖；此开关仅用于显式表达）
   --dry-run           预览模式（不落盘）
   -h, --help          显示帮助
@@ -138,23 +199,84 @@ MODE="${MODE:-standalone}"
 DOCS_ABS=""
 TARGET_DIR=""
 APP_ID_OPT="${APP_ID_OPT:-}"
+AGENTS_OPT="${AGENTS_OPT:-cursor}"
 DRY_RUN="${DRY_RUN:-0}"
 FORCE="${FORCE:-0}"
 
 parse_args() {
   while (( $# > 0 )); do
     case "$1" in
-      --mode=*) MODE="${1#*=}" ;;
-      --mode) shift; MODE="${1:-}" ;;
-      --app-id=*) APP_ID_OPT="${1#*=}" ;;
-      --app-id) shift; APP_ID_OPT="${1:-}" ;;
-      --dry-run) DRY_RUN=1 ;;
-      --force) FORCE=1 ;;
-      -h|--help) usage; exit 0 ;;
-      -*) error "未知选项: $1" ;;
-      *) DOCS_ABS="$1" ;;
+      --mode=*)
+        MODE="${1#*=}"
+        shift
+        ;;
+      --mode)
+        shift
+        MODE="${1:-}"
+        shift
+        ;;
+      --app-id=*)
+        APP_ID_OPT="${1#*=}"
+        shift
+        ;;
+      --app-id)
+        shift
+        APP_ID_OPT="${1:-}"
+        shift
+        ;;
+      --agents=*)
+        AGENTS_OPT="${1#*=}"
+        shift
+        ;;
+      --agents)
+        shift
+        local parts=()
+        while (( $# > 0 )); do
+          case "$1" in
+            -*) break ;;
+            *) parts+=("$1"); shift ;;
+          esac
+        done
+        if (( ${#parts[@]} == 0 )); then
+          error "缺少 --agents 值（如 cursor,trea 或 cursor trea）"
+        fi
+        AGENTS_OPT="$(IFS=','; echo "${parts[*]}")"
+        ;;
+      --dry-run)
+        DRY_RUN=1
+        shift
+        ;;
+      --force)
+        FORCE=1
+        shift
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      -*)
+        error "未知选项: $1"
+        ;;
+      *)
+        DOCS_ABS="$1"
+        shift
+        ;;
     esac
-    shift
+  done
+}
+
+declare -a enabled_agents=()
+
+parse_agents() {
+  if [[ "$AGENTS_OPT" == "all" ]]; then
+    enabled_agents=("${SDX_SUPPORTED_AGENTS[@]}")
+    return 0
+  fi
+
+  IFS=',' read -ra enabled_agents <<< "$AGENTS_OPT"
+  local a
+  for a in "${enabled_agents[@]}"; do
+    [[ "$a" == "cursor" || "$a" == "trea" ]] || error "无效 agent: $a（只支持 cursor、trea、all）"
   done
 }
 
@@ -169,15 +291,70 @@ init_repo_root() {
 validate() {
   [[ -n "$DOCS_ABS" ]] || { usage; exit 2; }
 
-  DOCS_ABS="$(abs_path "$DOCS_ABS")"
+  DOCS_ABS="$(strip_trailing_slash "$(abs_path "$DOCS_ABS")")"
   TARGET_DIR="$(abs_path "$(dirname "$DOCS_ABS")")"
-  [[ -d "$TARGET_DIR" ]] || error "目标工程目录不存在: $TARGET_DIR"
+  if [[ ! -d "$TARGET_DIR" ]]; then
+    info "目标工程目录不存在，将创建: $TARGET_DIR"
+    ensure_dir "$TARGET_DIR"
+  fi
 
   case "$MODE" in
     standalone|s) MODE="standalone" ;;
     central|c) MODE="central" ;;
     *) error "无效模式: $MODE（必须是 standalone/central 或 s/c）" ;;
   esac
+}
+
+copy_file() {
+  local src="$1" dst="$2"
+  if [[ "${DRY_RUN:-0}" == "1" ]]; then
+    log "[dry-run] 拷贝文件: $src -> $dst"
+    return 0
+  fi
+  ensure_dir "$(dirname "$dst")"
+  cp "$src" "$dst"
+}
+
+install_agent_skills_and_rules() {
+  local agent agent_dir
+  for agent in "${enabled_agents[@]}"; do
+    case "$agent" in
+      cursor) agent_dir="$TARGET_DIR/.cursor" ;;
+      trea)   agent_dir="$TARGET_DIR/.trea" ;;
+      *) error "未知 agent: $agent" ;;
+    esac
+
+    info ">>> 安装 ${agent} Agent 的 skills 与 rules..."
+    info "  agent 目录: $agent_dir"
+
+    ensure_dir "$agent_dir"
+    ensure_dir "$agent_dir/skills"
+    ensure_dir "$agent_dir/rules"
+
+    # skills：只安装 agent-* / document-* / knowledge-*，默认不安装 sdx-*
+    shopt -s nullglob
+    local -a skill_dirs=()
+    skill_dirs+=("$REPO_ROOT/.ai/skills"/agent-*)
+    skill_dirs+=("$REPO_ROOT/.ai/skills"/document-*)
+    skill_dirs+=("$REPO_ROOT/.ai/skills"/knowledge-*)
+    if [[ "${#skill_dirs[@]}" -eq 0 ]]; then
+      warn "未找到匹配的 skills（agent-*/document-*/knowledge-*）"
+    else
+      local sd
+      for sd in "${skill_dirs[@]}"; do
+        local skill
+        skill="$(basename "$sd")"
+        copy_dir "$sd" "$agent_dir/skills/$skill"
+      done
+    fi
+
+    # 将 skills 的说明文件拷贝到 agent 的 skills 根目录
+    if [[ -f "$REPO_ROOT/.ai/skills/README.md" ]]; then
+      copy_file "$REPO_ROOT/.ai/skills/README.md" "$agent_dir/skills/README.md"
+    fi
+    # rules：按用户要求同时拷贝到 agent/rules，便于就近查阅
+    sync_rules_filtered "$REPO_ROOT/.ai/rules" "$agent_dir/rules"
+  done
 }
 
 sync_dir_contents() {
@@ -194,6 +371,50 @@ sync_dir_contents() {
   fi
 }
 
+sync_rules_filtered() {
+  # 同步 rules，过滤掉 solution/analysis 两个目录
+  local src_rules="$1"
+  local dst_rules="$2"
+
+  [[ -d "$src_rules" ]] || return 0
+
+  if [[ "${DRY_RUN:-0}" == "1" ]]; then
+    log "[dry-run] 同步规则（过滤 solution/analysis）：$src_rules/ -> $dst_rules/"
+    local item base
+    shopt -s nullglob
+    for item in "$src_rules"/*; do
+      base="$(basename "$item")"
+      if [[ "$base" == "solution" || "$base" == "analysis" ]]; then
+        continue
+      fi
+      if [[ -d "$item" ]]; then
+        log "[dry-run] 拷贝目录: $item -> $dst_rules/$base"
+      else
+        log "[dry-run] 拷贝文件: $item -> $dst_rules/$base"
+      fi
+    done
+    return 0
+  fi
+
+  # 覆盖目标 rules，确保过滤生效（避免历史残留 solution/analysis）
+  rm -rf "$dst_rules"
+  ensure_dir "$dst_rules"
+
+  local item base
+  shopt -s nullglob
+  for item in "$src_rules"/*; do
+    base="$(basename "$item")"
+    if [[ "$base" == "solution" || "$base" == "analysis" ]]; then
+      continue
+    fi
+    if [[ -d "$item" ]]; then
+      copy_dir "$item" "$dst_rules/$base"
+    else
+      copy_file "$item" "$dst_rules/$base"
+    fi
+  done
+}
+
 copy_app_template() {
   info ">>> 初始化应用知识库到目标工程..."
   info "  目标工程: $TARGET_DIR"
@@ -205,7 +426,7 @@ copy_app_template() {
 }
 
 ensure_central_app_template() {
-  local project_name app_id app_dir app_yaml docs_abs repo_or_path git_dir
+  local project_name app_id app_dir app_yaml docs_abs repo_or_path repo_ref git_root docs_manifest_path
   project_name="$(basename "$TARGET_DIR")"
   if [[ -n "$APP_ID_OPT" ]]; then
     app_id="$APP_ID_OPT"
@@ -217,12 +438,14 @@ ensure_central_app_template() {
   app_yaml="$app_dir/${app_id}.yaml"
   docs_abs="$DOCS_ABS"
 
-  git_dir="$(detect_git_dir_or_empty "$TARGET_DIR")"
-  if [[ -n "$git_dir" ]]; then
-    repo_or_path="$git_dir"
+  repo_ref="$(detect_git_repo_ref_or_empty "$TARGET_DIR")"
+  git_root="$(detect_git_root_path_or_empty "$TARGET_DIR")"
+  if [[ -n "$repo_ref" ]]; then
+    repo_or_path="$repo_ref"
   else
     repo_or_path="$TARGET_DIR"
   fi
+  docs_manifest_path="$(docs_path_relative_to_git_root_or_abs "$git_root" "$docs_abs")"
 
   info ">>> 中央知识库模式：登记并生成技术视角模板..."
   info "  APP ID: $app_id"
@@ -234,17 +457,16 @@ ensure_central_app_template() {
     log "[dry-run] 写入文件: $app_yaml"
   else
     mkdir -p "$app_dir"
-    if [[ ! -f "$app_yaml" ]]; then
-      cat > "$app_yaml" <<EOF
+    # 始终写入（模板应反映最新接入信息）
+    cat > "$app_yaml" <<EOF
 # ${app_id} 应用注册信息
 id: "${app_id}"
 name: "${project_name}"
 description: "由 knowledge-init 生成的应用注册模板"
 repo_url: "${repo_or_path}"
-docs_manifest_path: "${docs_abs}"
+docs_manifest_path: "${docs_manifest_path}"
 service_ids: []
 EOF
-    fi
   fi
 
   upsert_system_index_record "$app_id" "$repo_or_path" "$docs_abs"
@@ -308,6 +530,9 @@ main() {
   if [[ "$MODE" == "central" ]]; then
     ensure_central_app_template
   fi
+
+  parse_agents
+  install_agent_skills_and_rules
 
   info "完成：knowledge-init"
 }

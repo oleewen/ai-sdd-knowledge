@@ -1,0 +1,7 @@
+# APP-POLICY-APPEAL 应用注册信息
+id: "APP-POLICY-APPEAL"
+name: "policy-appeal"
+description: "由 knowledge-init 生成的应用注册模板"
+repo_url: "git@git.ztosys.com:pangu/pangu-appeal.git"
+docs_manifest_path: "/docs"
+service_ids: []
